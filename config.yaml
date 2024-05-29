@@ -1,0 +1,13 @@
+app:
+  name: edot
+  host: 0.0.0.0
+  port: "3000"
+  version: "1.0.0"
+  debug: true
+database:
+  primary:
+    host: "127.0.0.1"
+    port: "5432"
+    user: "root"
+    password: "say1290"
+    database: "edot"
