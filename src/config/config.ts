@@ -7,6 +7,7 @@ type AppConfig = {
   name: string;
   host: string;
   port: string;
+  secret: string;
   version: string;
 };
 

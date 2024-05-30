@@ -1,9 +1,15 @@
 import express, {Express} from 'express';
 import {initConfig, config} from '@/config/config';
 import setupApp from '@/internal/setup';
+import helmet from 'helmet';
+import {rateLimiter} from '@/pkg/middleware/rate_limiter';
 
 function initServer(): Express {
   const app = express();
+
+  app.use(express.json());
+  app.use(helmet());
+  app.use(rateLimiter);
 
   return app;
 }

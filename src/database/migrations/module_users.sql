@@ -6,7 +6,7 @@ create table if not exists public.users (
   email varchar,
   phone varchar,
   type public.user_type,
-  password text,
+  password text not null,
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone
 );
