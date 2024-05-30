@@ -11,5 +11,5 @@ export async function validate(
   hashValue: string,
   plainValue: string
 ): Promise<boolean> {
-  return compare(hashValue, plainValue);
+  return compare(plainValue, hashValue);
 }

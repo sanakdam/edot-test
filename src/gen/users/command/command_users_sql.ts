@@ -5,8 +5,8 @@ interface Client {
 }
 
 export const createUserQuery = `-- name: CreateUser :one
-insert into
-  users (name, email, phone, type, password, updated_at)
+insert into users
+  (name, email, phone, type, password, updated_at)
 values
   ($1, $2, $3, $4, $5, now()) returning id`;
 
@@ -14,7 +14,7 @@ export interface CreateUserArgs {
     name: string | null;
     email: string | null;
     phone: string | null;
-    type: string | null;
+    type: string;
     password: string;
 }
 

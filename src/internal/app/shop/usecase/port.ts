@@ -3,18 +3,18 @@ import {config} from '@/config/config';
 import {Pool} from 'pg';
 import {Context} from '@/pkg/middleware/context';
 
-export type UserUC = {
+export type ShopUC = {
   query: Pool;
   command: Pool;
 };
 
-export function userContext(
+export function shopContext(
   req: Request,
   res: Response,
   next: NextFunction,
-  forward: (uc: UserUC, ctx: Context) => Response | Promise<Response>
+  forward: (uc: ShopUC, ctx: Context) => Response | Promise<Response>
 ) {
-  const uc: UserUC = {
+  const uc: ShopUC = {
     query: config.dbRead(),
     command: config.dbWrite(),
   };

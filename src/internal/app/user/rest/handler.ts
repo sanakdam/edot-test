@@ -1,17 +1,15 @@
-import express, {Router, Request, Response, NextFunction} from 'express';
-
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  console.log('Time:', Date.now());
-  next();
-};
+import {userContext} from '@/internal/app/user/usecase/port';
+import {customerMiddleware} from '@/pkg/middleware/authentication';
+import express, {NextFunction, Request, Response, Router} from 'express';
+import {handleProfileCustomer} from './user';
 
 export default function handler(): Router {
   const router = express.Router({mergeParams: true});
 
-  router.use(authMiddleware);
+  router.use(customerMiddleware);
 
-  router.get('/', (req: Request, res: Response) =>
-    res.send({message: 'HELLO'})
+  router.get('/profile', (req: Request, res: Response, next: NextFunction) =>
+    userContext(req, res, next, handleProfileCustomer)
   );
   return router;
 }

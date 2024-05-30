@@ -18,5 +18,8 @@
     "require": [
       "tsconfig-paths/register"
     ]
-  }
+  },
+  "files": [
+    "types.d.ts"
+  ]
 }

@@ -9,6 +9,7 @@ type AppConfig = {
   port: string;
   secret: string;
   version: string;
+  debug: boolean;
 };
 
 type DBConfig = {
