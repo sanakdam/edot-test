@@ -18,7 +18,7 @@ create table if not exists public.orders (
   shop_id bigint references public.shops,
   status public.order_status default 'WAITING_PAYMENT'::order_status,
   amount numeric,
-  shipping_amount numeric,
+  shipping_metadata jsonb,
   user_metadata jsonb,
   shop_metadata jsonb,
   created_at timestamp with time zone default now(),

@@ -5,7 +5,7 @@ interface Client {
 }
 
 export const listOrderQuery = `-- name: ListOrder :many
-select id, sales_order_id, user_id, shop_id, status, amount, shipping_amount, user_metadata, shop_metadata, created_at, updated_at from public.orders`;
+select id, sales_order_id, user_id, shop_id, status, amount, shipping_metadata, user_metadata, shop_metadata, created_at, updated_at from public.orders`;
 
 export interface ListOrderRow {
     id: string;
@@ -14,7 +14,7 @@ export interface ListOrderRow {
     shopId: string | null;
     status: string | null;
     amount: string | null;
-    shippingAmount: string | null;
+    shippingMetadata: any | null;
     userMetadata: any | null;
     shopMetadata: any | null;
     createdAt: Date | null;
@@ -35,7 +35,7 @@ export async function listOrder(client: Client): Promise<ListOrderRow[]> {
             shopId: row[3],
             status: row[4],
             amount: row[5],
-            shippingAmount: row[6],
+            shippingMetadata: row[6],
             userMetadata: row[7],
             shopMetadata: row[8],
             createdAt: row[9],

@@ -69,13 +69,14 @@ export async function createWarehouse(client: Client, args: CreateWarehouseArgs)
 
 export const createProductQuery = `-- name: CreateProduct :one
 insert into products
-  (shop_id, name, status, description, updated_at)
+  (shop_id, name, price, status, description, updated_at)
 values
-  ($1, $2, $3, $4, now()) returning id`;
+  ($1, $2, $3, $4, $5, now()) returning id`;
 
 export interface CreateProductArgs {
     shopId: string | null;
     name: string | null;
+    price: string | null;
     status: string | null;
     description: string | null;
 }
@@ -87,7 +88,7 @@ export interface CreateProductRow {
 export async function createProduct(client: Client, args: CreateProductArgs): Promise<CreateProductRow | null> {
     const result = await client.query({
         text: createProductQuery,
-        values: [args.shopId, args.name, args.status, args.description],
+        values: [args.shopId, args.name, args.price, args.status, args.description],
         rowMode: "array"
     });
     if (result.rows.length !== 1) {
@@ -128,6 +129,52 @@ export async function createProductStock(client: Client, args: CreateProductStoc
     const row = result.rows[0];
     return {
         id: row[0]
+    };
+}
+
+export const bookProductStockQuery = `-- name: BookProductStock :one
+with selected_stocks as (
+  select
+    ps.id, w.id as warehouse_id, w.name as warehouse_name, w.location as warehouse_location
+  from product_stocks ps
+  inner join warehouses w on w.id = ps.warehouse_id
+  where ps.product_id = $2 and w.status = 'ACTIVE' and ps.quantity >= $1
+  limit 1 
+)
+update product_stocks
+  set
+    quantity = product_stocks.quantity - $1
+from selected_stocks
+where product_stocks.id = selected_stocks.id
+returning selected_stocks.id, selected_stocks.warehouse_id, selected_stocks.warehouse_name, selected_stocks.warehouse_location`;
+
+export interface BookProductStockArgs {
+    quantity: string | null;
+    id: string | null;
+}
+
+export interface BookProductStockRow {
+    id: string;
+    warehouseId: string;
+    warehouseName: string | null;
+    warehouseLocation: string | null;
+}
+
+export async function bookProductStock(client: Client, args: BookProductStockArgs): Promise<BookProductStockRow | null> {
+    const result = await client.query({
+        text: bookProductStockQuery,
+        values: [args.quantity, args.id],
+        rowMode: "array"
+    });
+    if (result.rows.length !== 1) {
+        return null;
+    }
+    const row = result.rows[0];
+    return {
+        id: row[0],
+        warehouseId: row[1],
+        warehouseName: row[2],
+        warehouseLocation: row[3]
     };
 }
 

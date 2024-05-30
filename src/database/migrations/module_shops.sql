@@ -16,6 +16,7 @@ create table if not exists public.products (
   shop_id bigint references public.shops,
   name varchar,
   status public.product_status default 'ON_REVIEW'::product_status,
+  price numeric,
   description text,
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone

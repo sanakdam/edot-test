@@ -6,6 +6,7 @@ import {
   handlerRegisterShop,
   handleLoginShop,
 } from './user';
+import {handleListProduct} from './product';
 
 export default function handler(): Router {
   const router = express.Router({mergeParams: true});
@@ -32,6 +33,10 @@ export default function handler(): Router {
     '/login/shop',
     (req: Request, res: Response, next: NextFunction) =>
       guestContext(req, res, next, handleLoginShop)
+  );
+
+  router.get('/product', (req: Request, res: Response, next: NextFunction) =>
+    guestContext(req, res, next, handleListProduct)
   );
 
   return router;

@@ -25,6 +25,7 @@ export type SaveProductStockArgs = {
 export type SaveProductArgs = {
   user_id: string;
   name: string;
+  price: number;
   description: string;
   product_stocks: Array<SaveProductStockArgs>;
 };
@@ -48,6 +49,7 @@ export async function saveProduct(
     const productArgs: CreateProductArgs = {
       shopId: shopRow.id,
       name: args.name,
+      price: String(args.price),
       status: 'ACTIVE',
       description: args.description,
     };

@@ -17,6 +17,10 @@ const schemaCreateProduct: Schema = {
     notEmpty: true,
     errorMessage: 'Description cannot be empty!',
   },
+  price: {
+    isNumeric: true,
+    errorMessage: 'Price cannot be empty!',
+  },
   product_stocks: {
     isArray: {
       options: {min: 1},
@@ -48,6 +52,7 @@ export async function handleSaveProduct(uc: ShopUC, ctx: Context) {
     const args: SaveProductArgs = {
       user_id: auth.id,
       name: body.name,
+      price: body.price,
       description: body.description,
       product_stocks: body.product_stocks,
     };
